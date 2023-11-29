@@ -1,6 +1,10 @@
 body {
 	height: 100vh;
 	margin: 0;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #f3effb;
+	background-color: #160a29;
+	margin-right: 15px;
 }
 
 form {
@@ -13,33 +17,97 @@ input[type="file"] {
 }
 
 label {
-	padding: 10px;
-	background-color: #3498db;
-	color: #fff;
+	padding: 15px;
+	border-radius: 5px;
+	background-color: #069;
 	cursor: pointer;
+	transition: 0.2s background-color;
+}
+
+label:hover {
+	background-color: #09e;
 }
 
 details {
 	margin: 5px 0px 5px 30px;
+	background-color: #0c2c3b88;
+	padding-bottom: 5px;
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+.empty {
+	padding: 10px 20px;
+}
+
+details > summary {
+	padding: 10px;
+	background-color: #0c2c3b;
+}
+
+.func-name {
+	display: inline-block;
+	width: 50%;
+	overflow: hidden;
+	margin-right: 10px;
+}
+
+.bad .func-bytes {
+	background-color: #31180b88;
 	padding: 5px;
+	border-radius: 5px;
+	color: rgb(255, 64, 64);
+	font-weight: bold;
+}
+
+.good .func-bytes {
+	background-color: #31180b88;
+	padding: 5px;
+	border-radius: 5px;
+	color: rgb(64, 200, 64);
+	font-weight: bold;
 }
 
 pre {
-	padding-left: 30px;
+	margin: 15px 30px;
+	background-color: rgb(39, 39, 39);
+	padding: 10px;
+	border-left: 10px solid rgb(68, 68, 68);
+	border-radius: 10px;
+}
+
+.good > summary{
+	background-color: #0d9c3d88;
+}
+
+.bad > summary{
+	background-color: #c05b2988;
 }
 
 .good {
-	background-color: #0f06;
+	background-color: #12e25877;
 }
 
 .bad {
-	background-color: #f006;
+	background-color: #ee6f2f77;
 }
 
-.neutral {
-	background-color: #0003;
+.good-outer > summary{
+	background-color: #0d9c3d55;
+}
+
+.bad-outer > summary{
+	background-color: #c05b2955;
+}
+
+.good-outer {
+	background-color: #12e25844;
+}
+
+.bad-outer {
+	background-color: #ee6f2f44;
 }
 
 .code-highlight {
-	background-color: #ff03;
+	background-color: rgba(217, 255, 0, 0.342);
 }

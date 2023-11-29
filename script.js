@@ -1,33 +1,64 @@
-$(document).ready(function() {
-	
-	$('#file-input').on('change', function(evt) {
-		let files = evt.target.files;
+$('#file-input').on('change', function(evt) {
+	let files = evt.target.files;
 
-		$("#results").empty();
+	$("#results").empty();
 
-		for(let file of files) {
-			let reader = new FileReader();
-			
-			reader.onload = e => analyseProgram(file.name, e.target.result);
-			reader.onerror = e => logError(e);
-			
-			reader.readAsText(file);
+	for(let file of files) {
+		let reader = new FileReader();
+		
+		reader.onload = e => {
+			let functions = scanFunctions(e.target.result);
+			displayProgram(file.name, functions);
 		}
-	});
+		reader.onerror = e => logError(e);
+		
+		reader.readAsText(file);
+	}
 });
 
-function analyseProgram(name, text) {
+function displayProgram(name, functions) {
 	let file_div = $("<details>").addClass("file");
 
-	let file_name = $("<summary>").html(name);
+	let file_name = $("<summary>");
+	file_name.append(`<span class="func-name">${name}</span>`);
 	file_div.append(file_name);
 
-	scanFunctions(text, file_div);
+	let good = 0;
+	for(let funct of functions) {
+		let function_div = $("<details>");
+		if(funct.bytes > 555) {
+			function_div.addClass("bad");
+		}
+		else {
+			function_div.addClass("good");
+			good += 1;
+		}
+
+		let function_name = $("<summary>");
+		function_name.append(`<span class="func-name">${funct.name}</span>`);
+		function_name.append(`<span class="func-bytes">${funct.bytes}B / 555B</span>`);
+		function_div.append(function_name);
+
+		let function_body = $("<pre>").html(funct.contents);
+		function_div.append(function_body);
+
+		file_div.append(function_div);
+	}
+
+	if(functions.length == 0) {
+		file_div.append('<div class="empty">(no functions)</span>');
+	}
+
+	file_div.addClass(good == functions.length ? "good-outer" : "bad-outer");
+	file_name.append(`<span class="func-bytes">${good} / ${functions.length}</span>`);
+
 
 	$("#results").append(file_div);
 }
 
 function scanFunctions(text, file_div) {
+	let functions = [];
+
 	for(let i = 0; i < text.length; i ++) {
 		let char = text.charAt(i);
 
@@ -46,14 +77,23 @@ function scanFunctions(text, file_div) {
 	
 					while(!/\s/.test(text.charAt(start - 1)) && start > 1) start -= 1;
 					
-					i = handleFunction(text.substring(start, end), file_div, text, i);
+					let resp = handleFunction(text, i);
+
+					i = resp.end;
+					functions.push({
+						name: text.substring(start, end),
+						bytes: resp.chars,
+						contents: resp.contents,
+					});
 				}
 			}
 		}
 	}
+
+	return functions;
 }
 
-function handleFunction(name, file_div, text, index) {
+function handleFunction(text, index) {
 	let j = index+1;
 	let indents = 0;
 
@@ -65,13 +105,8 @@ function handleFunction(name, file_div, text, index) {
 
 	let function_text = text.substring(index, j+1);
 
-	let function_div = $("<details>");
-
-	let function_name = $("<summary>").html(name);
-	function_div.append(function_name);
-
-	let function_body = $("<pre>");
 	let function_body_html = "";
+	let chars = 0;
 
 	let in_span = false;
 	for(let i = 0; i < function_text.length; i ++) {
@@ -86,19 +121,15 @@ function handleFunction(name, file_div, text, index) {
 			in_span = true;
 		}
 
+		if(in_span) chars += 1;
+
 		function_body_html += char;
 	}
 	if(!in_span) {
 		function_body_html += "</span>"
 	}
 
-	function_body.html(function_body_html);
-	function_div.append(function_body);
-
-
-	file_div.append(function_div);
-
-	return j;
+	return {end: j, contents: function_body_html, chars: chars};
 }
 
 function logError(error) {
