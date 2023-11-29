@@ -1,7 +1,7 @@
-# C++ function length counter
+# [C++ function length counter](https://gre-v-el.github.io/Cpp-Func-Length-Counter/)
 
 ## Usage
-Open the website, the rest is intuitive.
+Open [the website](https://gre-v-el.github.io/Cpp-Func-Length-Counter/), the rest is intuitive.
 
 ## Features:
 * Upload multiple files at once
