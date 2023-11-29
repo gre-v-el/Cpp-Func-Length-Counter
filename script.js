@@ -139,14 +139,31 @@ function handleFunction(text, index) {
 	for(let i = 0; i < function_text.length; i ++) {
 		let char = function_text.charAt(i);
 
-		// if(i > 0 && char == "/" && text.charAt(i-1) == "/") {
-		// 	while(i < text.length && text.charAt(i) != "\n") { i+=1; }
-		// 	i+=1;
-		// }
-		// if(i > 0 && char == "*" && text.charAt(i-1) == "/") {
-		// 	while(i < text.length && text.charAt(i) != "/" || text.charAt(i-1) != "*") { i+=1; }
-		// 	i+=1;
-		// }
+		if(i < function_text.length - 1 && char == "/" && function_text.charAt(i+1) == "/") {
+			if(in_span) {
+				in_span = false;
+				function_body_html += "</span>";
+			}
+
+			while(i < function_text.length && function_text.charAt(i) != "\n") { 
+				function_body_html += function_text.charAt(i);
+				i+=1;
+			}
+			i+=1;
+		}
+		if(i < function_text.length - 1 && char == "/" && function_text.charAt(i+1) == "*") {
+			if(in_span) {
+				in_span = false;
+				function_body_html += "</span>";
+			}
+
+			while(i < function_text.length && function_text.charAt(i) != "/" || function_text.charAt(i-1) != "*") {
+				function_body_html += function_text.charAt(i);
+				i+=1; 
+			}
+			i+=1;
+		}
+		char = function_text.charAt(i);
 
 		if(/\s/.test(char) && in_span || i >= function_text.length-1) {
 			function_body_html += "</span>"
