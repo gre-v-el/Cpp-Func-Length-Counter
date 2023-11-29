@@ -6,16 +6,17 @@ body {
 	background-color: #160a29;
 }
 
-form {
+#results {
+	padding-bottom: 10px;
+}
+
+#form {
 	margin: 100px ;
 	text-align: center;
 }
 
-input[type="file"] {
-	display: none;
-}
-
-label {
+label[for="file-input"] {
+	font-size: 1.2rem;
 	padding: 15px;
 	border-radius: 5px;
 	background-color: #069;
@@ -23,15 +24,33 @@ label {
 	transition: 0.2s background-color;
 }
 
+input[type="file"] {
+	display: none;
+}
+
+label[for="max-size-input"] {
+	font-size: 1.2rem;
+}
+
+input[type="number"] {
+	width: 100px;
+	line-height: 1.2rem;
+	margin-top: 10px;
+	padding: 5px;
+	border-radius: 5px;
+	border: 2px solid #069;
+	margin-bottom: 50px;
+}
+
+
 label:hover {
 	background-color: #09e;
 }
 
 details {
-	margin: 5px 0px 5px 30px;
+	margin: 5px 15px;
 	background-color: #0c2c3b88;
 	padding-bottom: 5px;
-	margin-right: 15px;
 	border-radius: 10px;
 	overflow: hidden;
 }

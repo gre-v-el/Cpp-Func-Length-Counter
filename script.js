@@ -15,23 +15,51 @@ function escapeHtml (string) {
 	});
 }
 
-$('#file-input').on('change', function(evt) {
+let max_size = 555;
+let all_cpps = [];
+
+$('#max-size-input').on('keyup', function(evt) {
+	max_size = $('#max-size-input').val();
+	displayAll();
+});
+
+$('#file-input').on('change', async function(evt) {
 	let files = evt.target.files;
 
-	$("#results").empty();
+	all_cpps = [];
+	let promises = [];
 
 	for(let file of files) {
-		let reader = new FileReader();
-		
-		reader.onload = e => {
-			let functions = scanFunctions(e.target.result);
-			displayProgram(file.name, functions);
-		}
-		reader.onerror = e => logError(e);
-		
-		reader.readAsText(file);
+		promises.push(
+			new Promise((resolve) => {
+				let reader = new FileReader();
+				
+				reader.onload = e => {
+					let functions = scanFunctions(e.target.result);
+					all_cpps.push({name: file.name, functs: functions});
+
+					resolve();
+				}
+				reader.onerror = e => logError(e);
+				
+				reader.readAsText(file);
+			})
+		);
 	}
+
+	await Promise.all(promises);
+	displayAll();
 });
+
+function displayAll() {
+	$("#results").empty();
+
+	all_cpps.sort((e1, e2) => e1.name.localeCompare(e2.name));
+
+	for(let cpp of all_cpps) {
+		displayProgram(cpp.name, cpp.functs);
+	}
+}
 
 function displayProgram(name, functions) {
 	let file_div = $("<details>").addClass("file");
@@ -43,7 +71,7 @@ function displayProgram(name, functions) {
 	let good = 0;
 	for(let funct of functions) {
 		let function_div = $("<details>");
-		if(funct.bytes > 555) {
+		if(funct.bytes > max_size) {
 			function_div.addClass("bad");
 		}
 		else {
@@ -53,7 +81,7 @@ function displayProgram(name, functions) {
 
 		let function_name = $("<summary>");
 		function_name.append(`<span class="func-name">${funct.name}</span>`);
-		function_name.append(`<span class="func-bytes">${funct.bytes}B / 555B</span>`);
+		function_name.append(`<span class="func-bytes">${funct.bytes}B / ${max_size}B</span>`);
 		function_div.append(function_name);
 
 		let function_body = $("<pre>").html(funct.contents);
@@ -149,6 +177,7 @@ function handleFunction(text, index) {
 				function_body_html += function_text.charAt(i);
 				i+=1;
 			}
+			function_body_html += function_text.charAt(i);
 			i+=1;
 		}
 		if(i < function_text.length - 1 && char == "/" && function_text.charAt(i+1) == "*") {
@@ -161,6 +190,7 @@ function handleFunction(text, index) {
 				function_body_html += function_text.charAt(i);
 				i+=1; 
 			}
+			function_body_html += function_text.charAt(i);
 			i+=1;
 		}
 		char = function_text.charAt(i);

@@ -11,10 +11,16 @@
 </head>
 <body>
 
-    <form id="uploadForm" enctype="multipart/form-data">
-        <label for="file-input">Choose a file</label>
+    <!-- <form id="uploadForm" enctype="multipart/form-data"> -->
+	<div id="form">
+		<label for="max-size-input">Maximum function size:</label>
+		<br>
+		<input type="number" id="max-size-input" name="max-size-input" value="555">
+		<br>
+        <label for="file-input">Choose files</label>
         <input type="file" id="file-input" name="file-input" multiple accept=".cpp,.c,.h,text/plain">
-    </form>
+    </div>
+	<!-- </form> -->
 
 	<div id="results">
 		
