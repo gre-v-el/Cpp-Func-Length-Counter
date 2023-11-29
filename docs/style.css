@@ -54,7 +54,7 @@ input[type="number"] {
 }
 
 
-label:hover {
+label:hover[for="file-input"] {
 	background-color: #09e;
 }
 
