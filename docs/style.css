@@ -13,6 +13,17 @@ header {
 	background-color: #046;
 }
 
+.disclaimer {
+	font-size: 0.8rem;
+	color: rgb(113, 160, 184);
+}
+
+code {
+	background-color: #0006;
+	padding: 3px;
+	border-radius: 3px;
+}
+
 a {
 	color: rgb(31, 165, 231);
 }
