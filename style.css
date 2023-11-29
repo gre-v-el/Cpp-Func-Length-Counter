@@ -24,6 +24,10 @@ details {
 	padding: 5px;
 }
 
+pre {
+	padding-left: 30px;
+}
+
 .good {
 	background-color: #0f06;
 }
@@ -34,4 +38,8 @@ details {
 
 .neutral {
 	background-color: #0003;
+}
+
+.code-highlight {
+	background-color: #ff03;
 }

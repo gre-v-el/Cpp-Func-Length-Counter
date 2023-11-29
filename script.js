@@ -28,7 +28,6 @@ function analyseProgram(name, text) {
 }
 
 function scanFunctions(text, file_div) {
-
 	for(let i = 0; i < text.length; i ++) {
 		let char = text.charAt(i);
 
@@ -57,6 +56,7 @@ function scanFunctions(text, file_div) {
 function handleFunction(name, file_div, text, index) {
 	let j = index+1;
 	let indents = 0;
+
 	while(!(text.charAt(j) == "}" && indents == 0) && j < text.length) {
 		if(text.charAt(j) == "{") indents += 1;
 		if(text.charAt(j) == "}") indents -= 1;
@@ -70,8 +70,31 @@ function handleFunction(name, file_div, text, index) {
 	let function_name = $("<summary>").html(name);
 	function_div.append(function_name);
 
-	let function_body = $("<pre>").html(function_text);
+	let function_body = $("<pre>");
+	let function_body_html = "";
+
+	let in_span = false;
+	for(let i = 0; i < function_text.length; i ++) {
+		let char = function_text.charAt(i);
+
+		if(/\s/.test(char) && in_span || i >= function_text.length-1) {
+			function_body_html += "</span>"
+			in_span = false;
+		} 
+		else if(!/\s/.test(char) && !in_span && i > 0) {
+			function_body_html += '<span class="code-highlight">'
+			in_span = true;
+		}
+
+		function_body_html += char;
+	}
+	if(!in_span) {
+		function_body_html += "</span>"
+	}
+
+	function_body.html(function_body_html);
 	function_div.append(function_body);
+
 
 	file_div.append(function_div);
 
