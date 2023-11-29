@@ -28,49 +28,56 @@ function analyseProgram(name, text) {
 }
 
 function scanFunctions(text, file_div) {
-	let indents = 0;
-	let whole_text_index = 0;
 
-	for(let line of text.split('\n')) {
-				
-		for (let i = 0; i < line.length; i ++) {
-			let char = line.charAt(i);
+	for(let i = 0; i < text.length; i ++) {
+		let char = text.charAt(i);
 
-			if(char == "{") indents += 1;
-			if(char == "}") indents -= 1;
+		if(char == "{") {
+			let j = i-1;
 
-			if(char == "{" && indents == 1) {
-				let j = whole_text_index;
+			while(/\s/.test(text.charAt(j)) && j > 0) j -= 1;
 
-				while(text.charAt(j) != ")" && j > 0) j -= 1;
+			if(text.charAt(j) == ")") {
 				while(text.charAt(j) != "(" && j > 0) j -= 1;
 				while(/\s/.test(text.charAt(j)) && j > 0) j -= 1;
-
+	
 				if(j > 0) {
 					let end = j;
 					let start = j-1;
 	
 					while(!/\s/.test(text.charAt(start - 1)) && start > 1) start -= 1;
 					
-					handleFunction(text.substring(start, end), file_div, text, whole_text_index);
-				} 
-
+					i = handleFunction(text.substring(start, end), file_div, text, i);
+				}
 			}
-			whole_text_index += 1;
 		}
-		whole_text_index += 1;
 	}
 }
 
 function handleFunction(name, file_div, text, index) {
+	let j = index+1;
+	let indents = 0;
+	while(!(text.charAt(j) == "}" && indents == 0) && j < text.length) {
+		if(text.charAt(j) == "{") indents += 1;
+		if(text.charAt(j) == "}") indents -= 1;
+		j ++;
+	}
+
+	let function_text = text.substring(index, j+1);
+
 	let function_div = $("<details>");
-	let function_name = $("<summary>");
+
+	let function_name = $("<summary>").html(name);
 	function_div.append(function_name);
 
-	let function_body = $("<pre>");
+	let function_body = $("<pre>").html(function_text);
 	function_div.append(function_body);
+
+	file_div.append(function_div);
+
+	return j;
 }
 
 function logError(error) {
-
+	console.log(error);
 }

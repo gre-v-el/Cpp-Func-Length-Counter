@@ -18,3 +18,20 @@ label {
 	color: #fff;
 	cursor: pointer;
 }
+
+details {
+	margin: 5px 0px 5px 30px;
+	padding: 5px;
+}
+
+.good {
+	background-color: #0f06;
+}
+
+.bad {
+	background-color: #f006;
+}
+
+.neutral {
+	background-color: #0003;
+}
