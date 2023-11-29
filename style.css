@@ -1,0 +1,20 @@
+body {
+	height: 100vh;
+	margin: 0;
+}
+
+form {
+	margin: 100px ;
+	text-align: center;
+}
+
+input[type="file"] {
+	display: none;
+}
+
+label {
+	padding: 10px;
+	background-color: #3498db;
+	color: #fff;
+	cursor: pointer;
+}
