@@ -243,3 +243,24 @@ function handleFunction(text, index) {
 function logError(error) {
 	console.log(error);
 }
+
+
+
+let deadline = new Date("Dec 10, 2023 23:59:59").getTime();
+
+if(new Date().getTime() < deadline) {
+	setCounter();
+	setInterval(setCounter, 1000);
+}
+
+function setCounter() {
+	let diff = Math.max(0, deadline - new Date().getTime());
+
+	var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+	var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+	var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+	var seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+	$("#countdown").html(days + "d " + hours + "h "
+	+ minutes + "m " + seconds + "s");
+}
