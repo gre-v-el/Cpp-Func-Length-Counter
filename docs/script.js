@@ -122,6 +122,17 @@ function scanFunctions(text) {
 
 			while(/\s/.test(text.charAt(j)) && j > 0) j -= 1;
 
+			let k = j;
+			while(text.charAt(k) != "\n") {
+				k --;
+				if(text.charAt(k) == "/" && text.charAt(k-1) == "/") {
+					j = k-2;
+					break;
+				}
+			}
+
+			while(/\s/.test(text.charAt(j)) && j > 0) j -= 1;
+
 			if(text.charAt(j) == ")") {
 				while(text.charAt(j) != "(" && j > 0) j -= 1;
 				while(/\s/.test(text.charAt(j)) && j > 0) j -= 1;
