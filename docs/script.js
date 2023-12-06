@@ -153,6 +153,20 @@ function handleFunction(text, index) {
 	let indents = 0;
 
 	while(!(text.charAt(j) == "}" && indents == 0) && j < text.length) {
+
+		if(j < text.length - 1 && text.charAt(j) == "/" && text.charAt(j+1) == "/") {
+			while(j < text.length && text.charAt(j) != "\n") { 
+				j+=1;
+			}
+			continue;
+		}
+		if(j < text.length - 1 && text.charAt(j) == "/" && text.charAt(j+1) == "*") {
+			while(j < text.length && text.charAt(j) != "/" || text.charAt(j-1) != "*") {
+				j+=1; 
+			}
+			continue;
+		}
+
 		if(text.charAt(j) == "{") indents += 1;
 		if(text.charAt(j) == "}") indents -= 1;
 		j ++;
