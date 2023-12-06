@@ -142,8 +142,11 @@ function scanFunctions(text) {
 					let start = j-1;
 	
 					while(!/\s/.test(text.charAt(start - 1)) && start > 1) start -= 1;
+
+					let line_begin = start;
+					while(line_begin > 0 && text.charAt(line_begin-1) != "\n") line_begin -= 1;
 					
-					let resp = handleFunction(text, i);
+					let resp = handleFunction(text, line_begin);
 
 					i = resp.end;
 					functions.push({
@@ -160,8 +163,8 @@ function scanFunctions(text) {
 }
 
 function handleFunction(text, index) {
-	let j = index+1;
-	let indents = 0;
+	let j = index;
+	let indents = -1;
 
 	while(!(text.charAt(j) == "}" && indents == 0) && j < text.length) {
 
@@ -220,11 +223,11 @@ function handleFunction(text, index) {
 		}
 		char = function_text.charAt(i);
 
-		if(/\s/.test(char) && in_span || i >= function_text.length-1) {
+		if(/\s/.test(char) && in_span || i >= function_text.length) {
 			function_body_html += "</span>"
 			in_span = false;
 		} 
-		else if(!/\s/.test(char) && !in_span && i > 0) {
+		else if(!/\s/.test(char) && !in_span) {
 			function_body_html += '<span class="code-highlight">'
 			in_span = true;
 		}
