@@ -165,3 +165,22 @@ pre {
 	margin: 40px;
 	font-size: 2rem;
 }
+
+
+#disclaimer {
+	margin: 10px 100px;
+	line-height: 150%;
+	font-size: 1.2rem;
+}
+
+#license {
+	margin: 0 200px;
+	margin-bottom: 100px;
+	font-family: monospace;
+	font-size: 1.2rem;
+	line-height: 150%;
+	background-color: #1a1a1a;
+	padding: 10px;
+	border-radius: 15px;
+	border: 2px solid black;
+}
