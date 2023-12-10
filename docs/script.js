@@ -189,8 +189,24 @@ function handleFunction(text, index) {
 	let chars = 0;
 
 	let in_span = false;
+	let in_string = false;
+	let in_char = false;
 	for(let i = 0; i < function_text.length; i ++) {
 		let char = function_text.charAt(i);
+
+		if(char == "\"" && !in_string && !in_char) {
+			in_string = true;
+		}
+		else if(char == "\"" && in_string && !in_char) {
+			in_string = false;
+		}
+		
+		if(char == "\'" && !in_string && !in_char) {
+			in_char = true;
+		}
+		else if(char == "\'" && !in_string && in_char) {
+			in_char = false;
+		}
 
 		if(i < function_text.length - 1 && char == "/" && function_text.charAt(i+1) == "/") {
 			if(in_span) {
@@ -220,10 +236,10 @@ function handleFunction(text, index) {
 		}
 		char = function_text.charAt(i);
 
-		if(/\s/.test(char) && in_span || i >= function_text.length) {
+		if((/\s/.test(char) && !in_string && !in_char) && in_span || i >= function_text.length) {
 			function_body_html += "</span>"
 			in_span = false;
-		} 
+		}
 		else if(!/\s/.test(char) && !in_span) {
 			function_body_html += '<span class="code-highlight">'
 			in_span = true;
