@@ -123,10 +123,13 @@ function scanFunctions(text) {
 			while(/\s/.test(text.charAt(j)) && j > 0) j -= 1;
 
 			let k = j;
-			while(text.charAt(k) != "\n") {
+			while(text.charAt(k) != "\n" && k > 0) {
 				k --;
 				if(text.charAt(k) == "/" && text.charAt(k-1) == "/") {
 					j = k-2;
+					if(j < 0) {
+						j = 0;
+					}
 					break;
 				}
 			}
@@ -220,14 +223,15 @@ function handleFunction(text, index) {
 			}
 			function_body_html += function_text.charAt(i);
 			i+=1;
+			char = function_text.charAt(i);
 		}
-		if(i < function_text.length - 1 && char == "/" && function_text.charAt(i+1) == "*") {
+		else if(i < function_text.length - 1 && char == "/" && function_text.charAt(i+1) == "*") {
 			if(in_span) {
 				in_span = false;
 				function_body_html += "</span>";
 			}
 
-			while(i < function_text.length && function_text.charAt(i) != "/" || function_text.charAt(i-1) != "*") {
+			while(i < function_text.length && (function_text.charAt(i) != "/" || function_text.charAt(i-1) != "*")) {
 				function_body_html += function_text.charAt(i);
 				i+=1; 
 			}
