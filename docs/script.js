@@ -211,7 +211,7 @@ function handleFunction(text, index) {
 			in_char = false;
 		}
 
-		if(i < function_text.length - 1 && char == "/" && function_text.charAt(i+1) == "/") {
+		if(!in_string && !in_char && i < function_text.length - 1 && char == "/" && function_text.charAt(i+1) == "/") {
 			if(in_span) {
 				in_span = false;
 				function_body_html += "</span>";
@@ -225,7 +225,7 @@ function handleFunction(text, index) {
 			i+=1;
 			char = function_text.charAt(i);
 		}
-		else if(i < function_text.length - 1 && char == "/" && function_text.charAt(i+1) == "*") {
+		else if(!in_string && !in_char && i < function_text.length - 1 && char == "/" && function_text.charAt(i+1) == "*") {
 			if(in_span) {
 				in_span = false;
 				function_body_html += "</span>";
