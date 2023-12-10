@@ -135,7 +135,7 @@ function scanFunctions(text) {
 
 			if(text.charAt(j) == ")") {
 				while(text.charAt(j) != "(" && j > 0) j -= 1;
-				while(/\s/.test(text.charAt(j)) && j > 0) j -= 1;
+				let line_begin = j;
 	
 				if(j > 0) {
 					let end = j;
@@ -143,9 +143,6 @@ function scanFunctions(text) {
 	
 					while(!/\s/.test(text.charAt(start - 1)) && start > 1) start -= 1;
 
-					let line_begin = start;
-					while(line_begin > 0 && text.charAt(line_begin-1) != "\n") line_begin -= 1;
-					
 					let resp = handleFunction(text, line_begin);
 
 					i = resp.end;
